@@ -48,4 +48,4 @@ template: |
   $CHANGES
 
   ## 📦 NPM release
-  NPM release: [$REPOSITORY@$RESOLVED_VERSION](https://www.npmjs.com/package/$REPOSITORY/v/$RESOLVED_VERSION)
+  NPM release: [@file-type/plusY@$RESOLVED_VERSION](https://www.npmjs.com/package/@file-type/plus/v/$RESOLVED_VERSION)
