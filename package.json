@@ -1,0 +1,67 @@
+{
+  "name": "@file-type/plus",
+  "version": "0.1.0",
+  "description": "Binary, XML, PDF and compound file detection",
+  "type": "module",
+  "exports": {
+    ".": {
+      "node": {
+        "types": "./node.d.ts",
+        "import": "./node.js",
+        "module-sync": "./node.js"
+      },
+      "default": {
+        "types": "./core.d.ts",
+        "import": "./core.js",
+        "module-sync": "./core.js"
+      }
+    }
+  },
+  "scripts": {
+    "clean": "del-cli 'lib/**/*.js' 'lib/**/*.js.map' 'lib/**/*.d.ts' 'src/**/*.d.ts'",
+    "compile-src": "tsc -p lib",
+    "compile": "yarn run  compile-src",
+    "lint:ts": "biome check",
+    "build": "yarn run clean && yarn compile",
+    "test": "mocha",
+    "prepublishOnly": "yarn run build",
+    "update-biome": "yarn add -D --exact @biomejs/biome && npx @biomejs/biome migrate --write"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],
+  "keywords": [
+    "file-type",
+    "detect",
+    "detection",
+    "xml",
+    "compound",
+    "pdf",
+    "cfbf",
+    "bundle"
+  ],
+  "author": {
+    "name": "Borewit",
+    "url": "https://github.com/Borewit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "file-type": "^21.3.0"
+  },
+  "devDependencies": {
+    "@file-type/cfbf": "^0.2.2",
+    "@file-type/pdf": "^0.2.0",
+    "@file-type/xml": "^1.1.0",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.2.3",
+    "chai": "^6.2.2",
+    "del-cli": "^7.0.0",
+    "mocha": "^11.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "repository": "github:Borewit/file-type-plus",
+  "packageManager": "yarn@4.9.2"
+}
