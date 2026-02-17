@@ -7,7 +7,7 @@ import {
   fileTypeFromBlob,
   fileTypeFromBuffer,
   fileTypeFromStream,
-  fileTypeStream
+  fileTypeFromTokenizer
 } from '../lib/node.js';
 
 import {
@@ -16,6 +16,7 @@ import {
   fileTypeStream as nodeFileTypeStream
 } from '../lib/node.js';
 import {fileURLToPath} from "node:url";
+import {fromBuffer, fromFile} from "strtok3";
 
 function getFixtureUrl(fixtureFilename) {
   return new URL(`./fixture/${fixtureFilename}`, import.meta.url);
@@ -89,6 +90,35 @@ describe('file-type-plus', function () {
 
   describe('supported input types', () => {
 
+    it('node entry, should support tokenizer from Buffer', async function () {
+      const buffer = await readFile(getFixtureUrl('fixture.bmp'));
+      const tokenizer = fromBuffer(buffer);
+
+
+
+      const result = await fileTypeFromTokenizer(tokenizer);
+
+      expect(result).to.exist;
+      expect(result?.ext).to.equal('bmp');
+      expect(result?.mime).to.equal('image/bmp');
+    });
+
+    it('node entry, should support tokenizer from File', async function () {
+      const path = fileURLToPath(getFixtureUrl('fixture-normal.ai'));
+      const tokenizer = await fromFile(path);
+
+      try {
+        const result = await fileTypeFromTokenizer(tokenizer);
+
+        expect(result).to.exist;
+        expect(result?.ext).to.equal('ai');
+        expect(result?.mime).to.equal('application/illustrator');
+      } finally {
+        await tokenizer.close();
+      }
+    });
+
+
     it('core, should support Buffer input', async function () {
       const buffer = await readFile(getFixtureUrl('fixture.bmp')); // Buffer
       const result = await fileTypeFromBuffer(buffer);
@@ -145,7 +175,7 @@ describe('file-type-plus', function () {
     it('core, should support detection stream wrapping', async function () {
       const stream = createReadStream(getFixtureUrl('fixture.bmp'));
 
-      const detectionStream = await fileTypeStream(stream);
+      const detectionStream = await nodeFileTypeStream(stream);
 
       expect(detectionStream).to.exist;
       expect(detectionStream.fileType).to.exist;

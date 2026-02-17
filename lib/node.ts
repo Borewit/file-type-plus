@@ -7,9 +7,10 @@
 
 import {FileTypeParser, type FileTypePlusOptions} from './core.js';
 import {
-  fileTypeFromTokenizer,
+  fileTypeFromTokenizer as baseFileTypeFromTokenizer,
   supportedMimeTypes,
-  supportedExtensions, AnyWebReadableStream
+  supportedExtensions,
+  type AnyWebReadableStream
 } from 'file-type';
 import {ReadStream} from "node:fs";
 
@@ -26,11 +27,16 @@ export async function fileTypeFromFile(
   return new FileTypeParser(options).fromFile(path);
 }
 
-export async function fileTypeFromStream(
-  stream: Parameters<FileTypeParser['fromStream']>[0],
+export async function fileTypeFromStream(stream: AnyWebReadableStream<Uint8Array> | AnyWebReadableStream<Uint8Array<ArrayBufferLike>> | ReadStream,
+                                         options?: FileTypePlusOptions) {
+  return (new FileTypeParser(options)).fromStream(stream);
+}
+
+export async function fileTypeFromTokenizer(
+  tokenizer: Parameters<typeof baseFileTypeFromTokenizer>[0],
   options?: FileTypePlusOptions
 ) {
-  return new FileTypeParser(options).fromStream(stream);
+  return new FileTypeParser(options).fromTokenizer(tokenizer);
 }
 
 export function fileTypeStream(
@@ -40,13 +46,7 @@ export function fileTypeStream(
   return new FileTypeParser(options).toDetectionStream(readableStream as any, options);
 }
 
-/**
- * Re-export the same metadata helpers as `file-type`'s Node entry point.
- * Note: We intentionally do NOT re-export fileTypeFromBuffer/fromBlob here,
- * those come from ./core.js and already include the default plus detectors.
- */
 export {
-  fileTypeFromTokenizer,
   supportedMimeTypes,
   supportedExtensions
 };
