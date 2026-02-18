@@ -57,6 +57,7 @@ __metadata:
     del-cli: "npm:^7.0.0"
     file-type: "npm:^21.3.0"
     mocha: "npm:^11.7.5"
+    strtok3: "npm:^10.3.4"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.9.3"
   languageName: unknown
