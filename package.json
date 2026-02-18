@@ -1,6 +1,6 @@
 {
   "name": "@file-type/plus",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Binary, XML, PDF and compound file detection",
   "type": "module",
   "exports": {
